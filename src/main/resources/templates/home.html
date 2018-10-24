@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+    <title>Dashboard</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" th:src="@{/js/aplikasi/grafik.js}"></script>
+</head>
+<body>
+<section layout:fragment="content">
+
+    <section class="dashboard-counts no-padding-top">
+        <div class="container-fluid" id="grafikTagihan">
+            <div class="row bg-white has-shadow">
+                <h3>Pembayaran Tagihan</h3>
+            </div>
+            <div id="chart_div" class="row bg-white has-shadow">
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Counts Section-->
+    <section class="projects">
+        <div class="container-fluid" id="laporanTagihan">
+            <div class="project" th:each="laporan : ${daftarLaporanTagihan}">
+                <div class="row bg-white has-shadow">
+                    <div class="left-col col-lg-6 d-flex align-items-center justify-content-between">
+                        <div class="project-title d-flex align-items-center">
+                            <div class="image has-shadow">
+                                <img th:src="@{/img/project-3.jpg}" alt="..." class="img-fluid">
+                            </div>
+                            <div class="text">
+                                <h3 class="h4" th:text="${laporan.jenisTagihan.nama}">Project Title</h3>
+                                <small th:text="${'Jumlah tagihan outstanding : '+laporan.jumlahTagihanBelumLunas}">Lorem Ipsum Dolor</small><br>
+                                <small th:text="${'Jumlah tagihan lunas : '+laporan.jumlahTagihanLunas}">Lorem Ipsum Dolor</small>
+                            </div>
+                        </div>
+                        <div class="project-date">
+                            <a th:href="@{/tagihan/list(jenis=${laporan.jenisTagihan.id})}">
+                            <span class="hidden-sm-down" th:text="${'Nilai Tagihan : '+#numbers.formatDecimal(laporan.nilaiTagihan,1,'POINT',2,'COMMA')}">Today at 4:24 AM</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="right-col col-lg-6 d-flex align-items-center">
+                        <div class="time"><i class="fa fa-clock-o"></i>
+                            <a th:href="@{/pembayaran/list(jenis=${laporan.jenisTagihan.id})}">
+                            <span th:text="${'Nilai Pembayaran : '+#numbers.formatDecimal(laporan.nilaiPembayaran,1,'POINT',2,'COMMA')}">12:00 PM</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+</body>
+
+</html>
