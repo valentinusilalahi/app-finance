@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
@@ -25,7 +26,7 @@ public interface TagihanDao extends PagingAndSortingRepository<Tagihan, String> 
 	Page<Tagihan> findByJenisTagihanAndStatusTagihanOrderByTanggalTagihan(JenisTagihan jenisTagihan, StatusTagihan statusTagihan, Pageable pageable);
 	Page<Tagihan> findbyDebiturAndStatusTagihanOrderByTanggalTagihan(Debitur debitur, StatusTagihan statusTagihan, Pageable pageable);
 	Page<Tagihan> findByStatusTagihan(StatusTagihan statusTagihan, Pageable pageable);
-	Page<Tagihan> findByStatusNotifikasi(StatusNotifikasi statusNotifikasi, Pageable pageable);
+	Page<Tagihan> findByStatusNotifikasi(StatusNotifikasi statusNotifikasi, PageRequest pageable);
 	
 	@Query(
 			"select sum(t.nilaiTagihan) from Tagihan t where t.jenisTagihan = :jenisTagihan and t.statusTagihan = :statusTagihan"
