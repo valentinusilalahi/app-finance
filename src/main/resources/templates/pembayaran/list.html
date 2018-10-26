@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:v-on="http://www.w3.org/1999/xhtml"
+      xmlns:v-if="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
+    <head>
+        <meta charset="UTF-8">
+        <title>Data Pembayaran</title>
+    </head>
+    <body>
+        <section layout:fragment="content" class="tables">
+            <div id="daftarPembayaran">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="daily-feeds card">
+                                <div class="card-header">
+                                    <h3 class="h4">Rekap Pembayaran</h3>
+
+                                </div>
+                                <div class="card-body">
+                                    <form th:action="@{/pembayaran/csv}" method="get">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 form-control-label">Jenis Tagihan</label>
+                                            <div class="col-sm-6">
+                                                <select name="jenis" class="form-control">
+                                                    <option th:each="jenis : ${listJenisTagihan}"
+                                                            th:value="${jenis.id}" th:text="${jenis.nama}">Jenis Tagihan</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 form-control-label">Mulai Tanggal</label>
+                                            <div class="col-sm-4">
+                                                <input id="mulai" type="text"
+                                                       name="mulai"
+                                                       placeholder="yyyy-MM-dd"
+                                                       class="form-control form-control"
+                                                       th:value="${awalBulan}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 form-control-label">Sampai Tanggal</label>
+                                            <div class="col-sm-4">
+                                                <input id="sampai" type="text"
+                                                       name="sampai"
+                                                       placeholder="yyyy-MM-dd"
+                                                       class="form-control form-control"
+                                                       th:value="${akhirBulan}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-6 offset-sm-3">
+                                                <button class="btn btn-info" type="submit"><i class="fa fa-search"></i> Download CSV</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="daily-feeds card">
+                                <div class="card-close">
+                                    <div class="dropdown">
+                                        <button type="button" id="closeCard7" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
+                                        <div aria-labelledby="closeCard7"
+                                             class="dropdown-menu dropdown-menu-right has-shadow">
+                                            <a th:href="@{/pembayaran/list}"
+                                               class="dropdown-item edit">
+                                                <i class="fa fa-reorder"></i>
+                                                <span>Semua Jenis Tagihan</span>
+                                            </a>
+                                            <a th:href="@{/pembayaran/list(jenis=${jenis.id})}"
+                                               class="dropdown-item edit" th:each="jenis : ${listJenisTagihan}">
+                                                <i class="fa fa-reorder"></i>
+                                                <span th:text="${jenis.nama}"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-header">
+                                    <h3 class="h4">Daftar Pembayaran</h3>
+                                    <span th:if="${jenisTagihan}" th:text="${jenisTagihan.nama}">Jenis Tagihan</span>
+                                </div>
+
+                                <div class="card-body no-padding">
+                                    <!-- Start Item-->
+                                    <div class="item" th:if="${data == null || data.numberOfElements == null || data.numberOfElements < 1}">
+                                        Tidak ada data pembayaran
+                                    </div>
+                                    <div th:if="${data != null && data.hasContent()}">
+                                    <div class="item" th:each="pembayaran, rowStat : ${data.content}">
+                                        <div class="feed d-flex justify-content-between">
+                                            <div class="feed-body d-flex justify-content-between"><a href="#" class="feed-profile"><i class="fa fa-user fa-3x"></i></a>
+                                                <div class="content">
+                                                    <h5 th:text="${pembayaran.tagihan.nomor +' | '+ pembayaran.tagihan.debitur.nama}">Frank Williams</h5>
+                                                    <span th:text="${'Rp. '+#numbers.formatDecimal(pembayaran.jumlah, 1, 'POINT', 2, 'COMMA')}">Posted a new blog </span>
+                                                    <div class="full-date">
+                                                        <small th:text="${pembayaran.jenisPembayaran + ' | ' + pembayaran.bank.nama}">Today 5:60 pm - 12.06.2014</small>
+                                                        <small th:if="${pembayaran.virtualAccount}" th:text="${' | ' + pembayaran.virtualAccount.nomor}">Nomor VA</small>
+                                                    </div>
+                                                    <div class="full-date">
+                                                        <small>Referensi : </small><small th:text="${pembayaran.referensi}">Today 5:60 pm - 12.06.2014</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="date text-right"><small th:text="${pembayaran.waktuTransaksi}">5min ago</small></div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <!-- End Item -->
+
+                                    <!--Start Pagination -->
+                                    <div th:if="${data.numberOfElements}" class="card-footer">
+                                        <center>
+                                            <div class="dataTables_paginate paging_simple_numbers" id="datatable1_paginate">
+                                                <ul class="pagination" sd:pagination="full">
+                                                    <li class="paginate_button page-item previous disabled" id="datatable1_previous">
+                                                        <a href="#" aria-controls="datatable1" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+                                                    </li>
+                                                    <li class="paginate_button page-item active">
+                                                        <a href="#" aria-controls="datatable1" data-dt-idx="1" tabindex="0" class="page-link">1</a>
+                                                    </li>
+                                                    <li class="paginate_button page-item next" id="datatable1_next">
+                                                        <a href="#" aria-controls="datatable1" data-dt-idx="8" tabindex="0" class="page-link">Next</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </center>
+                                    </div>
+                                    <!-- End Pagination -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <th:block layout:fragment="script">
+        <script>
+            var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+            $('#mulai').datepicker({
+                format: 'yyyy-mm-dd',
+                uiLibrary: 'bootstrap4'
+            });
+            $('#sampai').datepicker({
+                format: 'yyyy-mm-dd',
+                uiLibrary: 'bootstrap4'
+            });
+        </script>
+        </th:block>
+    </body>
+</html>

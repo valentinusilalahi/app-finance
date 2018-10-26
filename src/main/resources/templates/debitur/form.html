@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:v-on="http://www.w3.org/1999/xhtml"
+      xmlns:v-if="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Input Debitur</title>
+</head>
+<body>
+
+<section layout:fragment="content" class="tables">
+    <div id="daftarDebitur">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                  <div class="card">
+                    <div class="card-header d-flex align-items-center">
+                      <h3 class="h4">Input Data Debitur</h3>
+                    </div>
+                    <div class="card-body">
+                      <form class="form-horizontal" th:method="post" th:action="@{/debitur/form}" th:object="${debitur}">
+                        <input type="hidden" th:field="*{id}">
+                        <div class="form-group row">
+                          <label class="col-sm-3 form-control-label">Nomor Debitur</label>
+                            <div class="col-sm-9">
+                                <input type="text" placeholder="Nomor Debitur" class="form-control" name="nomorDebitur" th:field="*{nomorDebitur}">
+                                <small class="invalid-feedback" th:if="${#fields.hasErrors('nomorDebitur')}" th:errors="*{nomorDebitur}">Example help text that remains unchanged.</small>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-3 form-control-label">Nama</label>
+                          <div class="col-sm-9">
+                              <input type="text" placeholder="Nama" class="form-control" th:field="*{nama}" name="nama">
+                              <small class="invalid-feedback" th:if="${#fields.hasErrors('nama')}" th:errors="*{nama}">Example help text that remains unchanged.</small>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-3 form-control-label">Email</label>
+                          <div class="col-sm-9">
+                            <input type="email" placeholder="Email Address" class="form-control" name="email" th:field="*{email}">
+                              <small class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Example help text that remains unchanged.</small>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-3 form-control-label">No HP</label>
+                          <div class="col-sm-9">
+                            <input type="text" placeholder="081xxxxx" class="form-control" name="noHp" th:field="*{noHp}">
+                              <small class="invalid-feedback" th:if="${#fields.hasErrors('noHp')}" th:errors="*{noHp}">Example help text that remains unchanged.</small>
+                          </div>
+                        </div>
+                        <div class="form-group row">       
+                          <div class="col-sm-9 offset-sm-3">
+                            <input type="submit" value="Simpan" class="btn btn-primary">
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
