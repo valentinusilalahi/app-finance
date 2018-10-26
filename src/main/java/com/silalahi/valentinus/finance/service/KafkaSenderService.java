@@ -184,7 +184,7 @@ public class KafkaSenderService {
 		kafkaTemplate.send(kafkaTopicNotificationRequest, objectMapper.writeValueAsString(notifikasi));
 	}
 	
-	private void sendNotifikasiPembayaran(Pembayaran pembayaran) {
+	public void sendNotifikasiPembayaran(Pembayaran pembayaran) {
 		sendPembayaranTagihan(pembayaran);
 		
 		try {
@@ -235,7 +235,7 @@ public class KafkaSenderService {
 		kafkaTemplate.send(kafkaTopicNotificationRequest, objectMapper.writeValueAsString(notifikasi));
 	}
 	
-	private void sendTagihanResponse(TagihanResponse tagihanResponse) {
+	public void sendTagihanResponse(TagihanResponse tagihanResponse) {
 		try {
 			String message = objectMapper.writeValueAsString(tagihanResponse);
 			LOGGER.debug("Kirim tagihan response : {}", message);
@@ -246,7 +246,7 @@ public class KafkaSenderService {
 		}
 	}
 	
-	private void sendDebiturResponse(Map<String, Object> data) {
+	public void sendDebiturResponse(Map<String, Object> data) {
 		try {
 			kafkaTemplate.send(kafkaTopicDebiturResponse, objectMapper.writeValueAsString(data));
 		} catch (Exception e) {

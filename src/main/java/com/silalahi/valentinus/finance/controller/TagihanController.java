@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.silalahi.valentinus.finance.dao.KodeBiayaDao;
 import com.silalahi.valentinus.finance.dao.PeriksaStatusTagihanDao;
 import com.silalahi.valentinus.finance.dao.TagihanDao;
+import com.silalahi.valentinus.finance.service.TagihanService;
 
 @Controller
 @RequestMapping("/tagihan")
@@ -29,5 +30,8 @@ public class TagihanController {
 	
 	@Autowired
 	private PeriksaStatusTagihanDao periksaStatusTagihanDao;
+	
+	@Autowired
+	private TagihanService tagihanService;
 
 }
